@@ -45,7 +45,7 @@ class HubTasks:
         print groupConfig
 
         HubTasks.channelNum += 1
-        self.number = HubTasks.channelNum
+        self.number = self.user.number(HubTasks.channelNum)
         self.payload = self.payload_generator()
         logger.info("payload size " + str(self.payload.__sizeof__()))
         logger.info("user name " + str(self.user.name()))

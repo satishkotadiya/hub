@@ -2,6 +2,9 @@ class HubUser:
     def __init__(self):
         pass
 
+    def number(self, suggested):
+        return suggested
+
     def name(self):
         raise NotImplementedError("HubUser.name must be implemented")
 
