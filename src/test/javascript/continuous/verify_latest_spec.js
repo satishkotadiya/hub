@@ -20,8 +20,6 @@ const NONE = '1970/01/01/00/00/00/001/none';
  *      if latest is not equal to zk, check zk again & compare
  *      check if ZK value is within Spoke cache
  *
- * skip global channels
- *
  */
 
 describe(testName, function () {

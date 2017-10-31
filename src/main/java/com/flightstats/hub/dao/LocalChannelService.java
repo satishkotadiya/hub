@@ -11,7 +11,7 @@ import com.flightstats.hub.metrics.MetricsService;
 import com.flightstats.hub.metrics.MetricsService.Insert;
 import com.flightstats.hub.metrics.Traces;
 import com.flightstats.hub.model.*;
-import com.flightstats.hub.replication.ReplicationGlobalManager;
+import com.flightstats.hub.replication.ReplicationManager;
 import com.flightstats.hub.time.TimeService;
 import com.flightstats.hub.util.TimeUtil;
 import com.flightstats.hub.webhook.TagWebhook;
@@ -45,7 +45,7 @@ public class LocalChannelService implements ChannelService {
     @Inject
     private ChannelValidator channelValidator;
     @Inject
-    private ReplicationGlobalManager replicationGlobalManager;
+    private ReplicationManager replicationManager;
     @Inject
     private LastContentPath lastContentPath;
     @Inject
@@ -71,11 +71,11 @@ public class LocalChannelService implements ChannelService {
     }
 
     private void notify(ChannelConfig newConfig, ChannelConfig oldConfig) {
-        if (newConfig.isReplicating() || newConfig.isGlobalMaster()) {
-            replicationGlobalManager.notifyWatchers();
+        if (newConfig.isReplicating()) {
+            replicationManager.notifyWatchers();
         } else if (oldConfig != null) {
-            if (oldConfig.isReplicating() || oldConfig.isGlobalMaster()) {
-                replicationGlobalManager.notifyWatchers();
+            if (oldConfig.isReplicating()) {
+                replicationManager.notifyWatchers();
             }
         }
         if (newConfig.isHistorical()) {
@@ -381,7 +381,7 @@ public class LocalChannelService implements ChannelService {
         contentService.delete(channelConfig.getDisplayName());
         channelConfigDao.delete(channelConfig.getDisplayName());
         if (channelConfig.isReplicating()) {
-            replicationGlobalManager.notifyWatchers();
+            replicationManager.notifyWatchers();
             lastContentPath.delete(channelName, REPLICATED_LAST_UPDATED);
         }
         lastContentPath.delete(channelName, HISTORICAL_EARLIEST);

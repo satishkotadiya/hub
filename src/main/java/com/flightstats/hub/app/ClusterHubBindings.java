@@ -32,7 +32,7 @@ class ClusterHubBindings extends AbstractModule {
         bind(ChannelService.class).to(ChannelNameService.class).asEagerSingleton();
         bind(ChannelService.class)
                 .annotatedWith(Names.named(ChannelService.DELEGATE))
-                .to(GlobalChannelService.class).asEagerSingleton();
+                .to(LocalChannelService.class).asEagerSingleton();
         bind(AwsConnectorFactory.class).asEagerSingleton();
         bind(S3Config.class).asEagerSingleton();
         bind(ContentService.class)
